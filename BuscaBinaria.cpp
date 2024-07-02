@@ -2,30 +2,36 @@
   nome: BuscaBinaria.cpp
   autor: Giovanni Rafael Serafim
   data: 05/6/2024
-  descrição: informa a posição do elemento que o usuario pedir de um vetor ordenado.
+  descrição: informa a posição do elemento que o usuario pedir de um vetor ordenado por insertion sort.
 */
 
 #include <stdio.h>
-
+#include <stdlib.h>
 void buscabinaria(int *, int, int); //prototipando a função da busca binaria
 
 void InsertionSort (int*, int);//prototipando a função do insertionSort
 
-
 int main()
 {
-    int vet[10];
-    int tam = sizeof(vet)/sizeof(int);
-    puts("vetor de tamanho 10 ");
-    
-    for(int i=0;i<tam;i++)//preenchendo o vetor
+	int tam;
+	printf("informe o tamanho do vetor: ");
+	scanf("%d", &tam);
+	
+	int *vet = (int*) malloc(tam * sizeof(int)); //aloçação dinâmica
+
+	if (vet == NULL) {
+        printf("Erro na alocação de memoria\n");
+        return 1; // Encerra o programa com erro
+         }
+	
+    for(int i=0;i<tam;i++)
     {
     	printf("digite a posicao %d do vetor: ", i+1);
     	scanf("%d", &vet[i]);
 	}
     
     printf("vetor atual: ");
-
+    
 		for (int i=0; i<tam; i++) //printando o vetor
 	{
 		printf("%d|", vet[i]);
@@ -35,41 +41,32 @@ int main()
 
 	printf("\nvetor ordenado pelo insertionSort: ");
 	
-		for (int i=0; i<tam; i++) //printando o vetor ordenado
+		for (int i=0; i<tam; i++) //printando o vetor
 	{
 		printf("%d|", vet[i]);
 	}
-	
-	
-	buscabinaria( vet,  0,  tam-1); //chamando a função da busca binaria
-	
+	buscabinaria( vet,  0,  tam-1); //chamando a função
 }
 
 void InsertionSort(int *lista, int tamanho) 
 {
 int i,j,aux;
-  for(i=0; i<tamanho-1; i++) //percorre o vetor
-  {
-    if(lista[i]>lista[i+1]) //se o numero atual for maior que o da frente
-	{
-     aux=lista[i+1];
-     lista[i+1]=lista[i]; lista[i]=aux; //troca
-     j=i-1; // j recebe o numero anterior
-      while(j>=0) //enquanto tiver numeros pro j voltar
-	  {
-       if(aux<lista[j]) //se o numero trocado for menor que o anterior
-	    {
-        lista[j+1]=lista[j]; lista[j]=aux;
-        }
-		else{
+  for(i=0; i<tamanho-1; i++) {
+    if(lista[i]>lista[i+1]) { 
+      aux=lista[i+1];
+      lista[i+1]=lista[i]; lista[i]=aux;
+      j=i-1;
+       while(j>=0){
+         if(aux<lista[j]){
+            lista[j+1]=lista[j]; lista[j]=aux;
+        }else{
          break;
-             }
-         j=j-1; // j volta mais um até voltar todo o vetor ou até o numero não ser menor que ele
-         }
-      }
-   }
-}
-
+          }
+       j=j-1;
+         }//fim do while
+     }
+   } //fim do for
+}//fim do insertion sort
 
 void buscabinaria (int *v, int ini, int fim)
 {
@@ -88,13 +85,11 @@ void buscabinaria (int *v, int ini, int fim)
 		{
 			achou = 1;
 			break;
-			
 		}
 		
 		else if(elem < v[meio])//se menor, cortar a metade maior do vetor
 		{
 			fim = meio - 1;
-	
 		}
 		else//se maior, cortar a metade menor do vetor
 		{
@@ -110,5 +105,4 @@ void buscabinaria (int *v, int ini, int fim)
 	{
 		printf("o %d nao existe nesse vetor", elem);
 	}
-	
-}
+}//fim da busca binaria
